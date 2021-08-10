@@ -2,27 +2,35 @@
 
 ## 命令
 
-| 命令(本地)                                         | 作用                                                    |
-| -------------------------------------------------- | ------------------------------------------------------- |
-| mkdir                                              | 创建版本库                                              |
-| cd                                                 | 进入                                                    |
-| pwd                                                | 查看路径                                                |
-| git init                                           | 初始化，把目录变成Git可以管理的仓库                     |
-| ls -ah                                             | 查看隐藏目录                                            |
-| git add                                            | 把文件提交到仓库                                        |
-| git commit -m "说明、备注"                         | 告诉Git，把文件提交到仓库                               |
-| git status                                         | 查看状态、结果                                          |
-| git diff                                           | 查看difference                                          |
-| git log                                            | 查看最近到最远的提交                                    |
-| git log --pretty=oneline                           | 查看最近到最远的提交（好看一点）                        |
-| git reset --hard HEAD^                             | 回退到上一版本                                          |
-| git reset --hard HEAD^```^/git reset --hard HEAD~n | 回退到上n个版本                                         |
-| git reset --hard 版本号                            | 找到相应版本                                            |
-| git reflog                                         | 记录每一次命令，可以找到版本号                          |
-| git checkout -- filename                           | 把文件恢复到上一次add或commit的版本（撤销工作区的修改） |
-| git reset HEAD filename                            | 把暂存区的修改撤销，重新放回工作区                      |
-| rm filename                                        | 删除文件                                                |
-|                                                    |                                                         |
+| 命令(本地)                                                   | 作用                                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------- |
+| mkdir                                                        | 创建版本库                                              |
+| cd                                                           | 进入                                                    |
+| pwd                                                          | 查看路径                                                |
+| git init                                                     | 初始化，把目录变成Git可以管理的仓库                     |
+| ls -ah                                                       | 查看隐藏目录                                            |
+| git add                                                      | 把文件提交到仓库                                        |
+| git commit -m "说明、备注"                                   | 告诉Git，把文件提交到仓库                               |
+| git status                                                   | 查看状态、结果                                          |
+| git diff                                                     | 查看difference                                          |
+| git log                                                      | 查看最近到最远的提交                                    |
+| git log --pretty=oneline                                     | 查看最近到最远的提交（好看一点）                        |
+| git reset --hard HEAD^                                       | 回退到上一版本                                          |
+| git reset --hard HEAD^```^/git reset --hard HEAD~n           | 回退到上n个版本                                         |
+| git reset --hard 版本号                                      | 找到相应版本                                            |
+| git reflog                                                   | 记录每一次命令，可以找到版本号                          |
+| git checkout -- filename                                     | 把文件恢复到上一次add或commit的版本（撤销工作区的修改） |
+| git reset HEAD filename                                      | 把暂存区的修改撤销，重新放回工作区                      |
+| rm filename                                                  | 删除文件                                                |
+| git checkout -b <pointername>          /git switch -c <pointername> | 创建分支，并切换到该分支                                |
+| git checkout <pointername>                     /git switch <pointername> | 切换到已有分支                                          |
+| git branch <pointername>                                     | 创建分支                                                |
+| git branch                                                   | 查看当前分支情况                                        |
+| git merge <pointername>                                      | 将指定分支合并到当前分支                                |
+| git branch -d <pointername>                                  | 删除指定分支                                            |
+|                                                              |                                                         |
+
+
 
 | 命令（上传到GitHub）                                         | 作用                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -47,48 +55,66 @@
 
 - git checkout可以用版本库里的文件替换工作区的文件，因此也可以用来恢复误删除的文件。<font color=red>从来没有添加到版本库就被删除的文件是不能被还原的！</font>
 
+- git branch命令会列出所有分支，且当前分支前会有‘*’
+
   ### 工作区
-  
+
   在电脑里能看到的目录
-  
+
   ### 版本库
-  
+
   工作区里有一个隐藏目录.git，里面有很多东西，其中最重要的是暂存区，Git自动创建的第一个分支```master```，以及它的第一个指针```HEAD```。
-  
+
   ```git add```就是把文件放到暂存区。
-  
+
   ```git commit```就是往```master```上提交修改。
-  
+
   每次修改完，如果没有将修改add到暂存区，则新的修改就不会被提交。
-  
+
   ### 如果想撤销某次修改
-  
+
   1. 文件在工作区：git checkout -- filename
   2. 文件在暂存区：git reset HEAD filename
   3. 文件在版本库：git reset --hard 版本号
   4. 文件已经推到远程版本库：等死
-  
+
   ### Windows系统使用GitHub
-  
+
   1. 创建SSH Key
-  
+
      ```
      $ ssh-keygen -t rsa -C "youremail@example.com"
      ```
-  
+
      然后一路回车使用默认值，不放心可以设置密码，完成后可以在用户目录找到```.ssh```目录，里面有```.id_rsa```（私钥）和```.id_rsa.pub```（公钥）两个文件。
-  
+
   2. Github设置SSH
-  
+
      登录GitHub，打开settings  ->SSH and GPG keys
-  
+
      Title任意，Key复制上```.id_rsa.pub```中的公钥。
-  
+
   3. 关联Github库与本地库
-  
+
      创建repository，参考开头**命令（上传到GitHub）**
+
+  ### 分支管理
+
+  #### 创建与合并分支
+
+  在主分支中，master指向最新的提交，而HEAD指向master，每次提交，master分支都会向前一步，线越来越长。
+
+  如果创建新的分支```new```，Git会创建一个新的指针`new`，指向master相同的提交，再把HEAD指向`new`，就表示当前分支在`new`上。
+
+  <font color=red>这之后，对工作区的修改就针对`new`分支，master指针位置不变。</font>
+
+  在完成`new`的工作之后，再把master指向当前提交，即可合并两指针。
+
+  合并后可以删除分支。
+
+  switch指令可以代替checkout用以转换分支。
+
   
-  
-  
+
   
 
