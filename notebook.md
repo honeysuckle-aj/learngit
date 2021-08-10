@@ -39,6 +39,15 @@
 | git stash apply stash@{<number>}                             | 恢复指定工作区                                          |
 | git cherry-pick <版本号>                                     | 复制一个指定的提交到当前分支                            |
 | git rebase                                                   | 把未push的分叉提交历史整理成直线                        |
+| git tag <name>                                               | 在最新提交的commit上打一个标签                          |
+| git tag <name> <id>                                          | 给指定id打上标签                                        |
+| git tag -a <name> -m"description" <id>                       | 用-a指定标签名，-m指定说明文字                          |
+| git tag                                                      | 查看所有标签                                            |
+| git show <tag name>                                          | 查看标签信息                                            |
+| git tag -d <tag name>                                        | 删除标签                                                |
+| git push origin <tag name>                                   | 推送某个标签到远程库                                    |
+| git push origin --tags                                       | 一次性推送尚未推送到远程的所有本地标签                  |
+| git push origin :refs/tags/<tag name>                        | 删除远程库的特定标签                                    |
 
 
 
@@ -52,6 +61,7 @@
 | git clone                                                    | 克隆远程库                                                   |
 | git branch --set-upstream-to=<remote repository branch> <local repository branch> | 指定本地分支与远程分支的链接                                 |
 | git pull                                                     | 将最新的提交从远程库抓下来                                   |
+|                                                              |                                                              |
 
 
 
@@ -160,6 +170,16 @@
   #### Rebase
   
   把分叉的提交历史整理成一条直线，看上去更直观，缺点是本地分叉提交已经被修改过了。
+  
+  ### 标签管理
+  
+  标签（tag）与commit相似，tag可以和某个commit绑在一起，方便分辨和查找。
+  
+  标签的排序是按照字母表顺序而非时间顺序，标签本身没有时间记录，标签标记的commit有时间记录。
+  
+  标签本身不会自动推送到远程库，所以可以安全的在本地删除；若标签已经被推送到远程，则现在本地删除，再从远程删除。要看看是否从远程库删除了标签可以打开GitHub查看。
+  
+  
   
   
   
