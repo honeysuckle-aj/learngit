@@ -28,16 +28,30 @@
 | git branch                                                   | 查看当前分支情况                                        |
 | git merge <pointername>                                      | 将指定分支合并到当前分支                                |
 | git branch -d <pointername>                                  | 删除指定分支                                            |
-|                                                              |                                                         |
+| git branch -D<pointername>                                   | 删除未被合并过的指定分支                                |
+| git log --graph                                              | 查看分支合并图                                          |
+| git log --graph --pretty=oneline --abbrev-commit             | 查看分支合并图                                          |
+| git stash                                                    | 储藏工作现场                                            |
+| git stash list                                               | 查看被储藏的工作                                        |
+| git stash apply                                              | 恢复stash中的工作                                       |
+| git stash drop                                               | 删除stash中的内容                                       |
+| git stash pop                                                | 恢复stash中的工作并删除stash                            |
+| git stash apply stash@{<number>}                             | 恢复指定工作区                                          |
+| git cherry-pick <版本号>                                     | 复制一个指定的提交到当前分支                            |
+| git rebase                                                   | 把未push的分叉提交历史整理成直线                        |
 
 
 
 | 命令（上传到GitHub）                                         | 作用                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| git remote                                                   | 查看远程库的信息                                             |
+| git remote -v                                                | 更详细的信息                                                 |
 | git remote add origin git@github.com:<username>/<repo name>.git | 把一个本地库与github库相关联                                 |
 | git push -u origin master                                    | 把本地库的所有内容推送到远程库上并相关联，在第二次push时就不用添加参数```-u``` |
 | git remote rm origin                                         | 删除本地库和远程的绑定关系                                   |
 | git clone                                                    | 克隆远程库                                                   |
+| git branch --set-upstream-to=<remote repository branch> <local repository branch> | 指定本地分支与远程分支的链接                                 |
+| git pull                                                     | 将最新的提交从远程库抓下来                                   |
 
 
 
@@ -114,7 +128,40 @@
 
   switch指令可以代替checkout用以转换分支。
 
-  
+  #### 解决冲突
 
+  两个分支之间有可能发生冲突，即内容不相同的情况，此时无法直接合并分支，只能试图把各自的修改合并起来，若还是存在冲突，就需要手动解决冲突后再提交。
+  
+  如果是本地分支与远程分支存在冲突（合作伙伴的提交与本地提交冲突），则先指定本地分支与远程分支的链接（如果已有则跳过），再将新提交抓取下来，在本地解决冲突。
+  
+  若没有建立链接，则会提示`no tracking information`。
+  
+  #### 分支管理策略
+  
+  通常，Git在合并分支时会丢失分支信息，可以用`--no-ff`参数强制禁用该模式，在merge时生成一个新的commit，这样从分支历史上就能看出分支信息。
+  
+  在实际开发中：
+  
+  1. master分支是非常稳定的，平时不在上面干活，只是用来发布新版本。
+  2. dev分支不稳定，是工作的地方。
+  3. 开发者们都在dev上干活，每个人都有自己的分支，平时往dev上合并，知道发布新版本时才将dev合并到master分支。
+  4. 开发一个新功能最好新建一个future分支
+  
+  #### Bug分支
+  
+  修复bug时，通过新建bug分支进行修复，然后合并、删除。
+  
+  当手头工作没有完成时，先将工作现场隐藏，然后去修复bug，修复后再回到工作现场。
+  
+  想要在两个分支中都修复bug，可以只将特定提交合并到另一分支（因为git提交的的更改，所以其实就是将特定的更改合并到另一分支）。
+  
+  在工作中可以多次stash，恢复的时候，先查看list，再恢复指定的stash。
+  
+  #### Rebase
+  
+  把分叉的提交历史整理成一条直线，看上去更直观，缺点是本地分叉提交已经被修改过了。
+  
+  
+  
   
 
